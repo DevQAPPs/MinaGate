@@ -2,11 +2,11 @@
 Application for token gating and content access utilizing the privacy and lightweight aspects of the Mina Protocol.
 ---
 
-MinaGate is a pioneering content access platform that leverages the Mina Protocol to offer privacy-centric token gating features. By utilizing zero-knowledge proofs, MinaGate allows content creators to restrict access to their content, ensuring only token holders can unlock and view exclusive materials.
+MinaGate is a pioneering content access platform that leverages the Mina Protocol to offer privacy-centric token gating features, utilizing `o1js` for creating zero-knowledge proofs (zkProofs) to offer privacy-focused token gating solutions. With MinaGate, content creators can restrict access to their content securely and privately, ensuring only verified token holders can gain access.
 
 ## Features
 
-- **Token Gating**: Restrict access to content based on NFT or specific token ownership.
+- **Token Gating**: Restrict access to content based on NFT or specific token ownership using zkProofs.
 - **Privacy-Preserving**: Utilize zero-knowledge proofs to verify token ownership without compromising user privacy.
 - **Lightweight Integration**: Thanks to Mina Protocol's succinct blockchain, integration is lightweight without the need for heavy blockchain data handling.
 - **Flexible Content Delivery**: Serve content from your preferred backend or decentralized storage without storing it on the blockchain.
@@ -35,6 +35,8 @@ MinaGate is a pioneering content access platform that leverages the Mina Protoco
 - Install [Node.js](https://nodejs.org/) (version 12.x or higher).
 - Access to a Mina Protocol node or [datahub](https://mina.datahub.figment.io/) for blockchain interactions.
 - A code editor like [VS Code](https://code.visualstudio.com/) for development.
+- o1js installed globally or in your project
+
 
 ### Installation
 
@@ -51,6 +53,7 @@ MinaGate is a pioneering content access platform that leverages the Mina Protoco
    ```sh
    cd minagate
    npm install
+   npm install @o1labs/snarkyjs
    ```
 
 3. **Environment Setup**
@@ -62,8 +65,39 @@ MinaGate is a pioneering content access platform that leverages the Mina Protoco
    PRIVATE_KEY=yourprivatekey
    PUBLIC_KEY=yourpublickey
    ```
+   
+4. **Write Your zkApp**
 
-4. **Run the Application**
+   Use `o1js` to create a zkApp for token gating:
+
+   ```typescript
+   // src/zkApp.ts
+   import { SmartContract, method, Field, PublicKey } from '@o1labs/snarkyjs';
+
+   class TokenGatingZkApp extends SmartContract {
+     @method
+     async checkTokenOwnership(proof: Field, ownerPublicKey: PublicKey) {
+       // Logic to verify zero-knowledge proof for token ownership
+     }
+   }
+
+   export default TokenGatingZkApp;
+   ```
+
+5. **Interact with zkApp**
+
+   Create scripts or a web interface to interact with the zkApp using `o1js`:
+
+   ```typescript
+   // src/interact.ts
+   import { Mina, Account, PrivateKey } from '@o1labs/snarkyjs';
+
+   async function accessContent(userPrivateKey: PrivateKey) {
+     const user = new Account(userPrivateKey);
+     // Interact with zkApp to generate and verify proof
+   }
+   ```
+6. **Run the Application**
 
    Start the development server:
 
